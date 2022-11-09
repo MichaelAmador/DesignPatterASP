@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+
 DesignPatternsASP/log2.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)

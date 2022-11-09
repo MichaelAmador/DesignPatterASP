@@ -1,4 +1,5 @@
-﻿using DesignPatterns.Factory;
+﻿using DesignPatterns.DependencyInjection;
+using DesignPatterns.Factory;
 using System;
 
 namespace DesignPatterns
@@ -8,7 +9,8 @@ namespace DesignPatterns
         static void Main(string[] args)
         {
             //PatternSingleton
-            PatternFactory();
+            //PatternFactory();
+            PatternDependencyInjection();
         }
 
         static void PatternSingleton()
@@ -28,6 +30,13 @@ namespace DesignPatterns
 
             ISale sale2 = internetSaleFactory.GetSale();
             sale2.Sell(15);
+        }
+
+        static void PatternDependencyInjection()
+        {
+            var beer = new Beer("Pikantus", "Erdinger");
+            var drinWithBeer = new DrinkWithBeer(10, 1, beer);
+            drinWithBeer.Build();
         }
     }
 }
