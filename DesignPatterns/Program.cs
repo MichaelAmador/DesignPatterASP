@@ -1,6 +1,9 @@
 ﻿using DesignPatterns.DependencyInjection;
 using DesignPatterns.Factory;
+using DesignPatterns.Models;
+using DesignPatterns.Repository;
 using System;
+using System.Linq;
 
 namespace DesignPatterns
 {
@@ -10,7 +13,9 @@ namespace DesignPatterns
         {
             //PatternSingleton
             //PatternFactory();
-            PatternDependencyInjection();
+            //PatternDependencyInjection();
+            PatternRepository();
+
         }
 
         static void PatternSingleton()
@@ -34,9 +39,42 @@ namespace DesignPatterns
 
         static void PatternDependencyInjection()
         {
-            var beer = new Beer("Pikantus", "Erdinger");
+            var beer = new DependencyInjection.Beer("Pikantus", "Erdinger");
             var drinWithBeer = new DrinkWithBeer(10, 1, beer);
             drinWithBeer.Build();
+        }
+
+        static void PatternRepository()
+        {
+            using (var context = new DesignPatternsContext())
+            {
+                // MANUAL
+                //var beerRepository = new BeerRepository(context);
+                //var beer = new Models.Beer
+                //{
+                //    Name = "Corona",
+                //    Style = "Pilsner"
+                //};
+                //beerRepository.Add(beer);
+                //beerRepository.Save();
+
+                //foreach (var b in beerRepository.Get())
+                //{
+                //    Console.WriteLine($"{b.Name}");
+                //}
+
+                // USING GENERICS
+                var beerRepository = new Repository<Models.Beer>(context);
+                var beer = new Models.Beer { Name = "Fuller", Style = "Stron Ale" };
+                beerRepository.Add(beer);
+                beerRepository.Save();
+
+                foreach (var item in beerRepository.Get())
+                {
+                    Console.WriteLine($"{item.Name}");
+                }
+
+            }
         }
     }
 }

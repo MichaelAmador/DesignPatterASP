@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DesignPattern.Repository\DesignPattern.Repository.csproj" />
+    <ProjectReference Include="..\DesignPatterns.Models\DesignPatterns.Models.csproj" />
     <ProjectReference Include="..\Tools\Tools.csproj" />
   </ItemGroup>
 

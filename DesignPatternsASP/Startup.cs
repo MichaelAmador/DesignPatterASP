@@ -1,7 +1,10 @@
+using DesignPattern.Repository;
+using DesignPatterns.Models.Data;
 using DesignPatternsASP.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +40,12 @@ namespace DesignPatternsASP
                     Configuration.GetSection("MyConfig").GetValue<decimal>("Extra"));
 
             });
+
+            services.AddDbContext<DesignPatternsContext>(Options =>
+            {
+                Options.UseSqlServer(Configuration.GetConnectionString("DbCnn"));
+            });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
