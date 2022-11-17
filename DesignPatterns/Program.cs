@@ -2,6 +2,7 @@
 using DesignPatterns.Factory;
 using DesignPatterns.Models;
 using DesignPatterns.Repository;
+using DesignPatterns.UnitOfWork;
 using System;
 using System.Linq;
 
@@ -14,8 +15,8 @@ namespace DesignPatterns
             //PatternSingleton
             //PatternFactory();
             //PatternDependencyInjection();
-            PatternRepository();
-
+            //PatternRepository();
+            PatternUnitOfWork();
         }
 
         static void PatternSingleton()
@@ -74,6 +75,32 @@ namespace DesignPatterns
                     Console.WriteLine($"{item.Name}");
                 }
 
+            }
+        }
+
+        static void PatternUnitOfWork()
+        {
+            using (var context = new DesignPatternsContext())
+            {
+                var unitOfWork = new UnitOfWork.UnitOfWork(context);
+                var beers = unitOfWork.Beers;
+                var beer = new Models.Beer
+                {
+                    Name = "Fuller",
+                    Style = "Porter"
+                };
+
+                beers.Add(beer);
+
+                var brands = unitOfWork.Brands;
+                var brand = new Models.Brand
+                {
+                    Name = "Fuller"
+                };
+
+                brands.Add(brand);
+
+                unitOfWork.Save();
             }
         }
     }

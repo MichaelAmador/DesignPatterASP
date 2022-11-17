@@ -40,10 +40,17 @@ namespace DesignPatterns.Models.Data
                 entity.Property(e => e.Style)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Bran)
+                    .WithMany(p => p.Beer)
+                    .HasForeignKey(d => d.BranId)
+                    .HasConstraintName("fk_beer_brand");
             });
 
             modelBuilder.Entity<Brand>(entity =>
             {
+                entity.Property(e => e.BrandId).ValueGeneratedNever();
+
                 entity.Property(e => e.Name)
                     .HasColumnName("NAME")
                     .HasMaxLength(30)
