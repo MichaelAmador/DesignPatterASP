@@ -1,6 +1,7 @@
 ﻿using DesignPattern.Repository;
 using DesignPatterns.Models.Data;
 using DesignPatternsASP.Models.ViewModel;
+using DesignPatternsASP.Strategies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -36,9 +37,7 @@ namespace DesignPatternsASP.Configuration
         [HttpGet]
         public IActionResult Add()
         {
-            var brands = _unitOfWork.Brands.Get();
-            ViewBag.Brands = new SelectList(brands, "BrandId", "Name");
-
+            GetBrandsData();
             return View();
         }
 
@@ -47,34 +46,27 @@ namespace DesignPatternsASP.Configuration
         {
             if (!ModelState.IsValid)
             {
-                var brands = _unitOfWork.Brands.Get();
-                ViewBag.Brands = new SelectList(brands, "BrandId", "Name");
+                GetBrandsData();
                 return View("Add", beerViewModel);
             }
 
-            var beer = new Beer()
-            {
-                Name = beerViewModel.Name,
-                Style = beerViewModel.Style
-            };
+            var context = beerViewModel.BrandId == null ?
+                          new BeerContext(new BeerwithBrandStrategy()) :
+                          new BeerContext(new BeerStrategy());
 
-            if (beerViewModel.BrandId == null)
-            {
-                var brand = new Brand()
-                {
-                    BrandId = Guid.NewGuid(),
-                    Name = beerViewModel.OtherBrand
-                };
-                beer.BranId = brand.BrandId;
-                _unitOfWork.Brands.Add(brand);
-            }
-            else beer.BranId = (Guid)beerViewModel.BrandId;
-
-            _unitOfWork.Beers.Add(beer);
-            _unitOfWork.Save();
+            context.Add(beerViewModel, _unitOfWork);
 
             return RedirectToAction("Index");
         }
+
+        #region Helpers
+        private void GetBrandsData()
+        {
+            var brands = _unitOfWork.Brands.Get();
+            ViewBag.Brands = new SelectList(brands, "BrandId", "Name");
+        }
+
+        #endregion
 
     }
 }

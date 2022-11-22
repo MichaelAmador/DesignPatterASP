@@ -2,6 +2,7 @@
 using DesignPatterns.Factory;
 using DesignPatterns.Models;
 using DesignPatterns.Repository;
+using DesignPatterns.Strategy;
 using DesignPatterns.UnitOfWork;
 using System;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace DesignPatterns
             //PatternFactory();
             //PatternDependencyInjection();
             //PatternRepository();
-            PatternUnitOfWork();
+            //PatternUnitOfWork();
+            PatternStrategy();
         }
 
         static void PatternSingleton()
@@ -102,6 +104,18 @@ namespace DesignPatterns
 
                 unitOfWork.Save();
             }
+        }
+
+        static void PatternStrategy()
+        {
+            var context = new Context(new CarStrategy());
+            context.Run();
+
+            context.Strategy = new MotoStrategy();
+            context.Run();
+
+            context.Strategy = new BicycleStrategy();
+            context.Run();
         }
     }
 }
