@@ -1,4 +1,5 @@
-﻿using DesignPatterns.DependencyInjection;
+﻿using DesignPatterns.Builder;
+using DesignPatterns.DependencyInjection;
 using DesignPatterns.Factory;
 using DesignPatterns.Models;
 using DesignPatterns.Repository;
@@ -18,7 +19,8 @@ namespace DesignPatterns
             //PatternDependencyInjection();
             //PatternRepository();
             //PatternUnitOfWork();
-            PatternStrategy();
+            //PatternStrategy();
+            PatternBuilder();
         }
 
         static void PatternSingleton()
@@ -116,6 +118,19 @@ namespace DesignPatterns
 
             context.Strategy = new BicycleStrategy();
             context.Run();
+        }
+
+        static void PatternBuilder()
+        {
+            var builder = new PreparedAlcoholicDrinkConcreteBuilder();
+            var barmanDirector = new BarmanDirector(builder);
+
+            //barmanDirector.PrepareMargarita();
+            barmanDirector.PreparePinaColada();
+
+            var preparedBeverage = builder.GetPreparedBeverage();
+
+            Console.WriteLine(preparedBeverage.Result);
         }
     }
 }

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tools.Earnings;
+using Tools.Generator;
 
 namespace DesignPatternsASP
 {
@@ -47,6 +48,7 @@ namespace DesignPatternsASP
             });
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<GeneratorConcreteBuilder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
