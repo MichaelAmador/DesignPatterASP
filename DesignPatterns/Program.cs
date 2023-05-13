@@ -3,6 +3,7 @@ using DesignPatterns.DependencyInjection;
 using DesignPatterns.Factory;
 using DesignPatterns.Models;
 using DesignPatterns.Repository;
+using DesignPatterns.State;
 using DesignPatterns.Strategy;
 using DesignPatterns.UnitOfWork;
 using System;
@@ -20,7 +21,8 @@ namespace DesignPatterns
             //PatternRepository();
             //PatternUnitOfWork();
             //PatternStrategy();
-            PatternBuilder();
+            //PatternBuilder();
+            PatternState();
         }
 
         static void PatternSingleton()
@@ -131,6 +133,21 @@ namespace DesignPatterns
             var preparedBeverage = builder.GetPreparedBeverage();
 
             Console.WriteLine(preparedBeverage.Result);
+        }
+
+        static void PatternState()
+        {
+            var customerContext = new CustomerContext();
+
+            Console.WriteLine(customerContext.GetState());
+            customerContext.Request(100);
+
+            Console.WriteLine(customerContext.GetState());
+            customerContext.Request(50);
+            Console.WriteLine(customerContext.GetState());
+
+            customerContext.Request(100);
+            Console.WriteLine(customerContext.GetState());
         }
     }
 }
